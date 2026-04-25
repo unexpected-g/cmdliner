@@ -17,6 +17,26 @@ if (not game:IsLoaded()) then
 	game.Loaded:Wait();
 end
 
+local OldPrint = print
+print = function(...)
+    local args = {...}
+    for i, v in ipairs(args) do
+        if type(v) == "string" and string.find(v, "crash") then
+            return -- Ignora prints suspeitos
+        end
+    end
+    return OldPrint(...)
+end
+
+task.spawn(function()
+    while UI and UI.Parent do
+        task.wait(5)
+        if game:GetService("CoreGui"):FindFirstChild("ErrorMessage") then
+            game:GetService("CoreGui"):FindFirstChild("ErrorMessage"):Destroy()
+        end
+    end
+end)
+
 local Cmd = (getgenv or function()
 	return (_G)
 end)
@@ -26,7 +46,7 @@ local Settings = ({
 	Prefix = (";"),
 	ChatPrefix = ("!"),
 	Seperator = (","),
-	Version = ("1.2"),
+	Version = ("1.0"),
 	CustomUI = (Cmd().CustomUI or "rbxassetid://127095266446147"),
 
 	Aliases = ({}),
@@ -45,11 +65,11 @@ local Settings = ({
 		Transparency = 0,
 
 		-- Frames:
-		Primary = Color3.fromRGB(18, 22, 30),
+		Primary = Color3.fromRGB(5, 5, 5),
 		Secondary = Color3.fromRGB(26, 30, 38),
 		Actions = Color3.fromRGB(36, 40, 48),
 		Component = Color3.fromRGB(26, 30, 38),
-		Highlight = Color3.fromRGB(210, 140, 90),
+		Highlight = Color3.fromRGB(0, 0, 0),
 		ScrollBar = Color3.fromRGB(12, 14, 18),
 
 		-- Text:
